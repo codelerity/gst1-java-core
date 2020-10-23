@@ -42,16 +42,16 @@ public class SampleTest {
         Gst.deinit();
     }
 
-//    @Test
-//    public void testGetCaps() {
-//    	SampleTester.test((Sample sample) -> {
-//    		Caps caps = sample.getCaps();
-//    		Structure struct = caps.getStructure(0);
-//    		String name = struct.getName();
-//    		assertEquals("video/x-raw", name);
-//    	});
-//    }
-//
+    @Test
+    public void testGetCaps() {
+    	SampleTester.test((Sample sample) -> {
+    		Caps caps = sample.getCaps();
+    		Structure struct = caps.getStructure(0);
+    		String name = struct.getName();
+    		assertEquals("video/x-raw", name);
+    	});
+    }
+
 //    @Test
 //    public void testGetBuffer() {
 //    	SampleTester.test((Sample sample) -> {
