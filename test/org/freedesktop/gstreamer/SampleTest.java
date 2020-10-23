@@ -46,9 +46,7 @@ public class SampleTest {
     public void testGetCaps() {
     	SampleTester.test((Sample sample) -> {
     		Caps caps = sample.getCaps();
-                assertEquals(1, caps.size());
     		Structure struct = caps.getStructure(0);
-                System.out.println(struct);
     		String name = struct.getName();
     		assertEquals("video/x-raw", name);
                 assertEquals(1, caps.size());

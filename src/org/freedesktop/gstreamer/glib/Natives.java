@@ -19,6 +19,7 @@ import com.sun.jna.Pointer;
 import java.util.ServiceLoader;
 import java.util.function.Function;
 import org.freedesktop.gstreamer.MiniObject;
+import org.freedesktop.gstreamer.Structure;
 import org.freedesktop.gstreamer.lowlevel.GObjectPtr;
 import org.freedesktop.gstreamer.lowlevel.GPointer;
 import org.freedesktop.gstreamer.lowlevel.GstMiniObjectPtr;
@@ -159,6 +160,7 @@ public final class Natives {
     private static <T extends NativeObject> T objectFor(Pointer ptr, Class<T> cls, int refAdjust, boolean ownsHandle) {
         final GPointer gptr = GObject.class.isAssignableFrom(cls) ? new GObjectPtr(ptr)
                 : MiniObject.class.isAssignableFrom(cls) ? new GstMiniObjectPtr(ptr)
+                : Structure.class.isAssignableFrom(cls) ? new GstMiniObjectPtr(ptr)
                 : new GPointer(ptr);
         return NativeObject.objectFor(gptr, cls, refAdjust, ownsHandle);
     }

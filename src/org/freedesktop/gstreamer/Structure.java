@@ -68,6 +68,8 @@ import static org.freedesktop.gstreamer.lowlevel.GstValueAPI.GSTVALUE_API;
  * @see Event
  */
 public class Structure extends NativeObject {
+    
+    public static final String GTYPE_NAME = "GstStructure";
 
 
     /**
