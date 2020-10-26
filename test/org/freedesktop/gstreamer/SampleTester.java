@@ -110,12 +110,11 @@ public class SampleTester {
         NewSampleListener sampleListener = new NewSampleListener(callback, skipFrames);
         appSink.connect(sampleListener);
 
-        bin.play();
-
         // Wait for the sample to arrive and for the client supplied test function to
         // complete
         try {
             synchronized (sampleListener) {
+                bin.play();
                 sampleListener.wait();
             }
         } catch (InterruptedException e) {
