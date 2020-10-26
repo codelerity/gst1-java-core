@@ -45,8 +45,6 @@ public class SampleTest {
     }
 
     @Test
-    @Ignore
-    // @TODO for some reason this test is unreliable on GitHub Actions.
     public void testGetCaps() {
     	SampleTester.test((Sample sample) -> {
     		Caps caps = sample.getCaps();
