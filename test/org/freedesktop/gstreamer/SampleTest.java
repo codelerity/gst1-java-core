@@ -92,4 +92,17 @@ public class SampleTest {
     	});
     }
     
+    @Test
+    public void testSampleTester() {
+        try {
+            SampleTester.test(sample -> {
+                throw new IllegalStateException();
+            });
+            fail("No exception thrown");
+        } catch (Throwable t) {
+            assertTrue(t instanceof AssertionError);
+            assertTrue(t.getCause() instanceof IllegalStateException);
+        }
+    }
+    
 }
