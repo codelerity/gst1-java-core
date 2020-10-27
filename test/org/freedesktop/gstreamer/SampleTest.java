@@ -26,7 +26,6 @@ import org.freedesktop.gstreamer.glib.Natives;
 import org.freedesktop.gstreamer.util.TestAssumptions;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class SampleTest {
@@ -50,10 +49,8 @@ public class SampleTest {
     		Caps caps = sample.getCaps();
                 assertEquals(1, caps.size());
     		Structure struct = caps.getStructure(0);
-//                System.out.println(struct);
-//    		String name = struct.getName();
-//    		assertEquals("video/x-raw", name);
-                assertTrue(struct.hasName("video/x-raw"));
+    		String name = struct.getName();
+    		assertEquals("video/x-raw", name);
     	});
     }
 
