@@ -1,4 +1,5 @@
 /* 
+ * Copyright (c) 2020 Neil C Smith
  * Copyright (c) 2007 Wayne Meissner
  * 
  * This file is part of gstreamer-java.
@@ -16,35 +17,31 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with gstreamer-java.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package org.freedesktop.gstreamer;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import java.lang.ref.WeakReference;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  *
- * @author wayne
  */
 public class GarbageCollectionTest {
-    
+
     public GarbageCollectionTest() {
     }
 
     @BeforeClass
     public static void setUpClass() throws Exception {
-        Gst.init("test", new String[] {});
+        Gst.init("test", new String[]{});
     }
-    
+
     @AfterClass
     public static void tearDownClass() throws Exception {
         Gst.deinit();
@@ -60,20 +57,21 @@ public class GarbageCollectionTest {
 
     @Test
     public void testElement() throws Exception {
-        
+
         Element e = ElementFactory.make("fakesrc", "test element");
         GCTracker tracker = new GCTracker(e);
-        e = null;        
-        assertTrue("Element not garbage collected", tracker.waitGC());        
+        e = null;
+        assertTrue("Element not garbage collected", tracker.waitGC());
         assertTrue("GObject not destroyed", tracker.waitDestroyed());
     }
+
     @Test
     public void testBin() throws Exception {
         Bin bin = new Bin("test");
         Element e1 = ElementFactory.make("fakesrc", "source");
         Element e2 = ElementFactory.make("fakesink", "sink");
         bin.addMany(e1, e2);
-        
+
         assertEquals("source not returned", e1, bin.getElementByName("source"));
         assertEquals("sink not returned", e2, bin.getElementByName("sink"));
         WeakReference<Element> binRef = new WeakReference<Element>(bin);
@@ -83,11 +81,12 @@ public class GarbageCollectionTest {
         WeakReference<Element> e2Ref = new WeakReference<Element>(e2);
         e1 = null;
         e2 = null;
-        
+
         assertTrue("First Element not garbage collected", GCTracker.waitGC(e1Ref));
         assertTrue("Second Element not garbage collected", GCTracker.waitGC(e2Ref));
-        
+
     }
+
     @Test
     public void testBinRetrieval() throws Exception {
         Bin bin = new Bin("test");
@@ -96,15 +95,16 @@ public class GarbageCollectionTest {
         bin.addMany(e1, e2);
         int id1 = System.identityHashCode(e1);
         int id2 = System.identityHashCode(e2);
-        
+
         e1 = null;
         e2 = null;
         System.gc();
         Thread.sleep(10);
         // Should return the same object that was put into the bin
         assertEquals("source ID does not match", id1, System.identityHashCode(bin.getElementByName("source")));
-        assertEquals("sink ID does not match", id2, System.identityHashCode(bin.getElementByName("sink")));       
+        assertEquals("sink ID does not match", id2, System.identityHashCode(bin.getElementByName("sink")));
     }
+
     @Test
     public void pipeline() {
         Pipeline pipe = new Pipeline("test");
@@ -114,13 +114,14 @@ public class GarbageCollectionTest {
         System.out.println("checking if pipeline is destroyed");
         assertTrue("Pipe not destroyed", pipeTracker.waitDestroyed());
     }
+
     @Test
     public void pipelineBus() {
         Pipeline pipe = new Pipeline("test");
         Bus bus = pipe.getBus();
         GCTracker busTracker = new GCTracker(bus);
         GCTracker pipeTracker = new GCTracker(pipe);
-        
+
         pipe = null;
         bus = null;
         assertTrue("Bus not garbage collected", busTracker.waitGC());
@@ -129,6 +130,7 @@ public class GarbageCollectionTest {
         assertTrue("Pipe not destroyed", pipeTracker.waitDestroyed());
 
     }
+
     @Test
     public void busWithListeners() {
         Pipeline pipe = new Pipeline("test");
@@ -138,7 +140,7 @@ public class GarbageCollectionTest {
             public void endOfStream(GstObject source) {
             }
         });
-        
+
         GCTracker busTracker = new GCTracker(bus);
         GCTracker pipeTracker = new GCTracker(pipe);
         bus = null;
